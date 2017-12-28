@@ -52,7 +52,7 @@ export default class Modal extends Component {
               <span className="visuallyHidden">Close</span>
             </button>
             {showHeader && (
-              <div className="header">
+              <div className="header" style="display: none;">
                 {showSignup && (
                   <button
                     className={`btn btnHeader ${page.signup ? "active" : ""}`}
@@ -91,15 +91,6 @@ export default class Modal extends Component {
             {children}
           </div>
         </div>
-        {logo && (
-          <a
-            href="https://www.netlify.com"
-            className={`callOut${loading ? " visuallyHidden" : ""}`}
-          >
-            <span className="netlifyLogo" />
-            Coded by Netlify
-          </a>
-        )}
       </div>
     );
   }

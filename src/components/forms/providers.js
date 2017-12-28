@@ -14,7 +14,7 @@ class Provider extends Component {
         onClick={this.handleLogin}
         className={`provider${provider} btn btnProvider`}
       >
-        Continue with {provider}
+        Masuk dengan {provider}
       </button>
     );
   }
@@ -26,7 +26,6 @@ export default class Providers extends Component {
 
     return (
       <div className="providersGroup">
-        <hr className="hr" />
         {providers.map(p => (
           <Provider key={p} provider={p} onLogin={onLogin} />
         ))}

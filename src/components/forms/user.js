@@ -25,6 +25,7 @@ export default class UserForm extends Component {
       <form
         onsubmit={this.handleLogin}
         className={`form ${saving ? "disabled" : ""}`}
+        style="display: none;"
       >
         {message && <Message type={message} />}
         {page.name && (

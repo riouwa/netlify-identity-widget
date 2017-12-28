@@ -170,6 +170,7 @@ class App extends Component {
               <button
                 onclick={pageLinkHandler}
                 className="btnLink forgotPasswordLink"
+                style="display: none;"
               >
                 {page.link_text}
               </button>

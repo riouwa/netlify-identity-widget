@@ -98,7 +98,7 @@
   }
 }
 
-@media (min-width: 480px) {
+@media (min-width: 320px) {
   .modalContainer::before {
     background-color: var(--baseColor);
     animation: fadeIn 0.1s ease-in;

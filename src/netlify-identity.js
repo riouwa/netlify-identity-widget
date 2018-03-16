@@ -49,7 +49,8 @@ const netlifyIdentity = {
   },
   init: options => {
     init(options);
-  }
+  },
+  store
 };
 
 let queuedIframeStyle = null;
@@ -71,9 +72,12 @@ const localHosts = {
   "0.0.0.0": true
 };
 
-function instantiateGotrue() {
+function instantiateGotrue(APIUrl) {
   const isLocal = localHosts[document.location.host.split(":").shift()];
   const siteURL = isLocal && localStorage.getItem("netlifySiteURL");
+  if (APIUrl) {
+    return new GoTrue({ APIUrl, setCookie: !isLocal });
+  }
   if (isLocal && siteURL) {
     const parts = [siteURL];
     if (!siteURL.match(/\/$/)) {
@@ -110,7 +114,7 @@ observe(store.modal, "isOpen", () => {
   }
   setStyle(iframe, {
     ...iframeStyle,
-    display: store.modal.isOpen ? "block" : "none"
+    display: store.modal.isOpen ? "block !important" : "none"
   });
   if (store.modal.isOpen) {
     trigger("open", store.modal.page);
@@ -145,7 +149,7 @@ const errorRoute = /error=access_denied&error_description=403/;
 const accessTokenRoute = /access_token=/;
 
 function runRoutes() {
-  const hash = (document.location.hash || "").replace(/^#/, "");
+  const hash = (document.location.hash || "").replace(/^#\/?/, "");
   if (!hash) {
     return;
   }
@@ -175,8 +179,8 @@ function runRoutes() {
   }
 }
 
-function init(options) {
-  options = options || {};
+function init(options = {}) {
+  const { APIUrl, logo = true } = options;
   const controlEls = document.querySelectorAll(
     "[data-netlify-identity-menu],[data-netlify-identity-button]"
   );
@@ -195,8 +199,8 @@ function init(options) {
     );
   });
 
-  store.init(instantiateGotrue());
-  if (options.hasOwnProperty("logo")) store.modal.logo = options.logo;
+  store.init(instantiateGotrue(APIUrl));
+  store.modal.logo = logo;
   iframe = document.createElement("iframe");
   iframe.id = "netlify-identity-widget";
   iframe.onload = () => {

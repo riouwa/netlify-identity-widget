@@ -21,18 +21,7 @@ module.exports = {
   },
 
   resolve: {
-    extensions: [".jsx", ".js", ".json"],
-    modules: [
-      path.resolve(__dirname, "src/lib"),
-      path.resolve(__dirname, "node_modules"),
-      "node_modules"
-    ],
-    alias: {
-      components: path.resolve(__dirname, "src/components"), // used for tests
-      style: path.resolve(__dirname, "src/style"),
-      react: "preact-compat",
-      "react-dom": "preact-compat"
-    }
+    extensions: [".jsx", ".js", ".json"]
   },
 
   module: {
@@ -45,7 +34,7 @@ module.exports = {
       },
       {
         test: /\.jsx?$/,
-        exclude: /node_modules/,
+        exclude: /(micro-api-client|lodash)/,
         use: "babel-loader"
       },
       {
@@ -72,7 +61,7 @@ module.exports = {
       },
       {
         test: /\.(xml|html|txt|md)$/,
-        use: "raw-loader"
+        use: " r"
       },
       {
         test: /\.(svg|woff2?|ttf|eot|jpe?g|png|gif)(\?.*)?$/i,
@@ -80,6 +69,8 @@ module.exports = {
       }
     ]
   },
+  // See the other webpack config before changing the order of plugins.
+  // They modify the plugins array by index
   plugins: [
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.DefinePlugin({
@@ -87,6 +78,12 @@ module.exports = {
     }),
     new HtmlWebpackPlugin({
       template: "./index.ejs",
+      inject: false,
+      minify: { collapseWhitespace: true }
+    }),
+    new HtmlWebpackPlugin({
+      filename: "foo.html",
+      template: "./foo.ejs",
       inject: false,
       minify: { collapseWhitespace: true }
     })
@@ -120,7 +117,7 @@ module.exports = {
               if_return: true,
               join_vars: true,
               cascade: true,
-              drop_console: true
+              drop_console: false
             }
           })
         ]
